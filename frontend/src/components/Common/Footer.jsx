@@ -7,7 +7,7 @@ import { TbPhoneCall } from "react-icons/tb";
 const Footer = () => {
   return (
     <>
-      <div className=" container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-6 py-6 border-b border-gray-200 ">
+      <div className=" container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-6 py-6 border-b border-t border-gray-200">
         <div className="text-sm space-y-2">
           <h1 className="font-bold mb-4">Newsletter</h1>
           <p className="text-gray-700 hover:text-black font-medium text-sm">
