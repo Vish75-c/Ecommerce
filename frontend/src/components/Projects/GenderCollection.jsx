@@ -4,7 +4,7 @@ import womenImg from '../../assets/womens-collection.webp'
 import { Link } from 'react-router-dom'
 const GenderCollection = () => {
   return (
-    <section className='py-16 px-4 md:px-16 w-full'>
+    <section className='py-16 px-4 md:px-4 w-full'>
         <div className='container mx-auto grid grid-cols-1 md:grid-cols-2  gap-8'>
             <div className='relative flex-1'>
                 <img src={womenImg} alt="women-img" className='w-full h-[550px] md:h-[700px] object-cover rounded-md' />
