@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 const Projectgrid = ({product}) => {
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 space-x-6'>
+    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
         {
             product.map((item,index)=>{
                 return (<Link to={`/product/${item.id}`}><div key={index} className='flex flex-col w-full'>
