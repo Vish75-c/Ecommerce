@@ -31,7 +31,7 @@ const Navbar = () => {
         </div>
         {/* right icons */}
         <div className="flex items-center space-x-4">
-            <Link to='/profile' className='hover:text-black '><HiOutlineUser className='h-6 w-6 text-gray-700'/></Link>
+            <Link to='/login' className='hover:text-black '><HiOutlineUser className='h-6 w-6 text-gray-700'/></Link>
             <button className='relative hover:text-black text-gray-700' onClick={()=>(setopen(true))}>
                 <HiOutlineShoppingBag className='h-6 w-6 text-gray-700'/>
                 <span className='absolute -top-1 bg-[#ea2e0e] text-white text-xs rounded-full px-2 py-.5'>4</span>
