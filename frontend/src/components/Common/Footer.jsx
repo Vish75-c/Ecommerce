@@ -107,7 +107,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="container mx-auto pt-6 flex justify-center items-center">
+      <div className="container mx-auto py-6 flex justify-center items-center">
         <p className="text-xs text-gray-700 hover:text-black">© 2025 | All Rights Reserved</p>
       </div>
       
