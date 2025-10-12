@@ -24,7 +24,7 @@ const Register = () => {
             <p className=" font-semibold mb-4">Enter your name,email and password to register.</p>
             <div className="w-full mb-4">
                 <label className="block font-bold mb-1">Name</label>
-                <input type="text" onChange={(e)=>setusername(e.target.value)} placeholder="Enter your Name" value={name} className="py-2 px-4 w-full outline-none border text-sm border-gray-200 rounded-md" required={true}/>
+                <input type="text" onChange={(e)=>setname(e.target.value)} placeholder="Enter your name" value={name} className="py-2 px-4 w-full outline-none border text-sm border-gray-200 rounded-md" required={true}/>
             </div>
             <div className="w-full mb-4">
                 <label className="block font-bold mb-1">Email</label>
