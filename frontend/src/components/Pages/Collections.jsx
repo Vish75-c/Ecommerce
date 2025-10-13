@@ -3,7 +3,7 @@ import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 import { FaFilter } from "react-icons/fa";
 import { useState } from "react";
-import FilterSlideBar from "../Common/FilterSlideBar";
+import FilterSlideBar from "../Layout/FilterSlideBar";
 import SortOptions from "../Layout/SortOptions";
 import Projectgrid from "../Layout/Projectgrid";
 const Collections = () => {
@@ -109,7 +109,7 @@ const Collections = () => {
   return (
     <>
       <Header />
-      <div className="flex flex-col lg:flex-row ">
+      <div className="flex flex-col lg:flex-row space-y-6 md:space-x-6 ">
         {/* Mobile Slide Function */}
         <button
           onClick={() => toggleslide()}
@@ -121,7 +121,7 @@ const Collections = () => {
           ref={slideref}
           className={`${
             slide ? "translate-x-0" : "-translate-x-full"
-          } fixed left-0 w-64 bg-white inset-0 z-50 transition-transform duration-300 lg:static lg:translate-x-0`}
+          } fixed left-0 w-64 bg-white inset-0 z-50 min-h-full overflow-y-scroll lg:overflow-y-hidden transition-transform duration-300 lg:static lg:translate-x-0`}
         >
           <FilterSlideBar />
         </div>
