@@ -4,6 +4,7 @@ import UserLayout from './components/Layout/UserLayout'
 import Login from './components/Pages/Login'
 import Register from './components/Pages/Register'
 import Profile from './components/Pages/Profile'
+import Collections from './components/Pages/Collections'
 const App = () => {
   return (
     <BrowserRouter>
@@ -12,6 +13,7 @@ const App = () => {
       <Route path='/login' element={<Login/>}></Route>
       <Route path='/register' element={<Register/>}></Route>
       <Route path='/profile' element={<Profile/>}></Route>
+      <Route path='/collections/:collection' element={<Collections/>}></Route>
       {/*  */}
     </Routes>
     </BrowserRouter>
