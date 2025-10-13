@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 const FilterSlideBar = () => {
   const [searchparams, setsearchparams] = useSearchParams();
   const navigate = useNavigate();
+  const [priceRange, setpriceRange] = useState([0, 100]);
   const [filter, setfilter] = useState({
     category: "",
     gender: "",
@@ -13,7 +14,7 @@ const FilterSlideBar = () => {
     minPrice: 0,
     maxPrice: 100,
   });
-  const [priceRange, setpriceRange] = useState([0, 100]);
+  
   const category = ["Top Wear", "Bottom Wear"];
   const colors = [
     "Red",
@@ -59,7 +60,7 @@ const FilterSlideBar = () => {
       minPrice: params.minPrice || 0,
       maxPrice: params.maxPrice || 100,
     });
-    setpriceRange([0, params.maxPrice || 100]);
+    setpriceRange([0,100]);
   }, [searchparams]);
   const handlefilterchange = (e) => {
     const { name, value, checked, type } = e.target;
@@ -79,6 +80,11 @@ const FilterSlideBar = () => {
     setfilter(newFilter);
     console.log(newFilter);
   };
+  const handlepricechange=(e)=>{
+    const newFilter={...filter,minPrice:0,maxPrice:e.target.value}
+    setfilter(newFilter);
+    handleURlChange(newFilter);
+  }
   const handleURlChange = (newFilter) => {
     const params = new URLSearchParams();
     Object.keys(newFilter).forEach((key) => {
@@ -89,7 +95,7 @@ const FilterSlideBar = () => {
       }
     });
     setsearchparams(params);
-    navigate(`?${params.toString()}`);
+   // navigate(`?${params.toString()}`);
   };
   return (
     <div className="flex flex-col p-4">
@@ -127,7 +133,7 @@ const FilterSlideBar = () => {
                 type="radio"
                 name="gender"
                 value={gender}
-                checked={category.gender===gender}
+                checked={filter.gender===gender}
                 onChange={(e) => handlefilterchange(e)}
                 className="text-blue-500 focus:ring-blue-5400 border-gray-300 mr-2 h-4 w-4"
               />
@@ -231,6 +237,9 @@ const FilterSlideBar = () => {
         <input
           type="range"
           min={0}
+          name="Price"
+          
+          onChange={(e)=>handlepricechange(e)}
           max={priceRange[1]}
           className="cursor-pointer"
         />
