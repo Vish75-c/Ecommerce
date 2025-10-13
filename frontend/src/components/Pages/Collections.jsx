@@ -104,8 +104,11 @@ const Collections = () => {
   useEffect(() => {
     document.addEventListener("mousedown", handlemousedown);
     // remove event listener
-    document.removeEventListener("mousedown", handlemousedown);
-  });
+    return (()=>
+      (document.removeEventListener("mousedown", handlemousedown))
+    )
+    
+  },[]);
   return (
     <>
       <Header />
