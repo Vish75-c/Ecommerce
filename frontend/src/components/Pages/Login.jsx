@@ -14,7 +14,7 @@ const Login = () => {
     }
   return (
     <>
-      <Header />
+      
       <div className="md:flex flex-row">
         <div className=" w-full md:w-1/2 p-8 md:p-12 flex items-center justify-center">
         <form onSubmit={(e)=>handlesubmit(e)} className=" p-8 rounded-lg flex flex-col justify-center items-center max-w-md shadow-md border border-gray-300">
@@ -46,7 +46,7 @@ const Login = () => {
         </div>
       </div>
 
-      <Footer />
+      
     </>
   );
 };

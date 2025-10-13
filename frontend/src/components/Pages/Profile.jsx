@@ -6,7 +6,6 @@ import MyOrder from '../Layout/MyOrder'
 const Profile = () => {
   return (
     <>
-      <Header/>
       <div className='flex min-h-screen'>
         <div className=' container mx-auto'>
             <div className='flex flex-col md:flex-row p-6 '>
@@ -25,7 +24,7 @@ const Profile = () => {
     
         </div>
       </div>
-      <Footer/>
+    
     </>
   )
 }
