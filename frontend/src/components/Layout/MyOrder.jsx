@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 const MyOrder = () => {
+  const navigate=useNavigate();
   const [orders, setOrders] = useState([]);
-
+  const handleProduct=(id)=>{
+    navigate(`/order/${id}`)
+  }
   useEffect(() => {
     setTimeout(() => {
       const mockOrders = [
@@ -54,7 +57,7 @@ const MyOrder = () => {
           <tbody>
             {orders.length > 0 ? (
               orders.map((item) => (
-                <tr key={item._id} className="border-b hover:bg-gray-50">
+                <tr onClick={()=>handleProduct(item._id)} key={item._id} className="border-b border-gray-200 hover:bg-gray-50">
                   <td className="px-4 py-3">
                     <img
                       src={item.orderitems[0].image}
@@ -102,7 +105,8 @@ const MyOrder = () => {
           orders.map((item) => (
             <div
               key={item._id}
-              className="border rounded-lg p-4 shadow-sm bg-white"
+              onClick={()=>handleProduct(item._id)}
+              className="border border-gray-200 rounded-lg p-4 shadow-sm bg-white"
             >
               <div className="flex items-center gap-4 mb-2">
                 <img

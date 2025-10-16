@@ -9,6 +9,8 @@ import Product from "./components/Common/Product";
 import Home from "./components/Pages/Home";
 import Checkout from "./components/Cart/Checkout";
 import OrderConfirmation from "./components/Pages/OrderConfirmation";
+import Orderdetail from "./components/Pages/Orderdetail";
+import Order from "./components/Pages/orders";
 const App = () => {
   return (
     <BrowserRouter>
@@ -25,6 +27,8 @@ const App = () => {
           <Route path="/product/:id" element={<Product />}></Route>
           <Route path='/checkout' element={<Checkout/>}></Route>
           <Route path='/order-confirmation' element={<OrderConfirmation/>}></Route>
+          <Route path='/order/:id' element={<Orderdetail/>}></Route>
+          <Route path="/my-orders" element={<Order/>}></Route>
         </Route>
 
         {/*  */}
