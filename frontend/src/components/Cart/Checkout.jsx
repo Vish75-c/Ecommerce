@@ -180,7 +180,10 @@ const Checkout = () => {
           <span className="text-lg font-semibold">Shipping</span>
           <span className="text-lg font-semibold">Free</span>
         </div>
-        
+      <div className="flex justify-between mt-5 border-t border-gray-600 w-full ">
+          <span className="text-xl font-semibold">Total</span>
+          <span className="text-xl font-semibold">${cart.totalprice.toLocaleString()}</span>
+        </div>
       </div>
     </div>
   );
