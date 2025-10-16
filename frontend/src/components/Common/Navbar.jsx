@@ -24,10 +24,10 @@ const Navbar = () => {
             <Link to='/' className='text-xl font-bold text-gray-700 hover:text-black'>iShop</Link>
         </div>
         <div className='hidden md:flex space-x-6'>
-            <Link to='#' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Men</Link>
-            <Link to='#' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Women</Link>
-            <Link to='#' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Top Wear</Link>
-            <Link to='#' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Buttom Wear</Link>
+            <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Men</Link>
+            <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Women</Link>
+            <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Top Wear</Link>
+            <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Buttom Wear</Link>
         </div>
         {/* right icons */}
         <div className="flex items-center space-x-4">

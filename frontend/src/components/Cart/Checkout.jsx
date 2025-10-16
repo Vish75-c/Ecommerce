@@ -3,6 +3,25 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Paypalbtn from "./Paypalbtn";
 const Checkout = () => {
+  const cart={
+     product:[
+      {
+        name:"Stylish Jacket",
+        size:"M",
+        color:"Black",
+        price:120,
+        image:"https://picsum.photos/150?random=1"   
+      },
+       {
+        name:"Denim Sneakers",
+        size:"L",
+        color:"Black",
+        price:130,
+        image:"https://picsum.photos/150?random=2"   
+       }
+    ],
+    totalprice:250,
+  }
     const navigate=useNavigate();
   const [shippingid, setshippingid] = useState("");
   const [shipping, setshipping] = useState({
@@ -24,8 +43,8 @@ const Checkout = () => {
     e.preventDefault();
     setshippingid("123");
   };
-  const handlesuccess=(details)=>{
-    console.log(details)
+  const handlesuccess=()=>{
+    console.log("Confirmed")
     navigate('/order-confirmation')
   }
   return (
@@ -123,18 +142,46 @@ const Checkout = () => {
             />
           </div>
           {shippingid.length == 0 ? (
-            <button className="text-white opacity-55 bg-black rounded-sm w-full p-2">
+            <button onClick={handlesuccess} className="text-white opacity-55 bg-black rounded-sm w-full p-2">
               Continue to Payment
             </button>
           ) : (
             <div>
               <h1>Pay Using paypal</h1>
-              <Paypalbtn amount={100} onSuccess={handlesuccess} onError={(err)=>alert("Payment Failed")}/>
+              {/* <Paypalbtn amount={100} onSuccess={handlesuccess} onError={(err)=>alert("Payment Failed")}/> */}
             </div>
           )}
         </form>
       </div>
-      <div className="w-full"></div>
+      <div className="w-full p-6 bg-gray-50 rounded-lg flex flex-col">
+        <h1 className="text-2xl font-semibold mb-10">Order Summary</h1>
+        {cart.product.map((item,index)=>{
+          return (
+            <div key={index} className="w-full py-2 flex items-start border-b border-gray-200">
+              <div className="mr-4 ">
+                <img src={item.image} alt="item-image" className="w-20 h-20 rounded-lg object-cover"/>
+              </div>
+              <div className="flex justify-between w-full">
+                <div  >
+                  <h1 className="text-lg  font-bold text-black opacity-80">{item.name}</h1>
+                  <p className=" text-gray-500 ">Size:{item.size}</p>
+                  <p className="text-gray-500 ">Color:{item.color}</p>
+                </div>
+                <span className="text-md font-semibold">${item.price.toLocaleString()}</span>
+              </div>
+            </div>
+          )
+        })}
+        <div className="flex justify-between mt-10 w-full ">
+          <span className="text-lg font-semibold">Subtotal</span>
+          <span className="text-lg font-semibold">${cart.totalprice}</span>
+        </div>
+        <div className="flex justify-between mt-5 w-full ">
+          <span className="text-lg font-semibold">Shipping</span>
+          <span className="text-lg font-semibold">Free</span>
+        </div>
+        
+      </div>
     </div>
   );
 };
