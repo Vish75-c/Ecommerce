@@ -15,7 +15,7 @@ const AdminSlideBar = (props) => {
           Admin DashBoard
         </Link>
         <NavLink
-          to="/admin/user"
+          to="/admin/users"
           className={({ isActive }) =>
             isActive
               ? "flex items-center gap-3 px-4 py-2 mb-1 rounded-lg bg-zinc-700 text-emerald-400 font-semibold transition-colors"
