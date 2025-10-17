@@ -31,6 +31,7 @@ const Navbar = () => {
         </div>
         {/* right icons */}
         <div className="flex items-center space-x-4">
+          <Link to='/admin' className='text-white text-sm py-1 opacity-80 rounded-md px-3 bg-black'>Admin</Link>
             <Link to='/login' className='hover:text-black '><HiOutlineUser className='h-6 w-6 text-gray-700'/></Link>
             <button className='relative hover:text-black text-gray-700' onClick={()=>(setopen(true))}>
                 <HiOutlineShoppingBag className='h-6 w-6 text-gray-700'/>
@@ -50,10 +51,10 @@ const Navbar = () => {
         </div>
         <div className='flex flex-col p-4 space-y-3'>
           <h1 className='text-black text-xl font-bold'>Menu</h1>
-                      <Link to='#' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Men</Link>
-            <Link to='#' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Women</Link>
-            <Link to='#' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Top Wear</Link>
-            <Link to='#' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Buttom Wear</Link>
+                      <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Men</Link>
+            <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Women</Link>
+            <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Top Wear</Link>
+            <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Buttom Wear</Link>
         </div>
       </div>
     </>
