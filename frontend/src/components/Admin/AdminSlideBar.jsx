@@ -1,5 +1,6 @@
 import React from "react";
-import { FaBox, FaSignOutAlt,FaBoxOpen, FaClipboard, FaStore, FaUser } from "react-icons/fa";
+import { FaBox, FaSignOutAlt,FaBoxOpen, FaClipboard, FaStore, FaUser, FaCross, FaXRay } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
 import { Link, NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 const AdminSlideBar = (props) => {
@@ -8,10 +9,13 @@ const AdminSlideBar = (props) => {
         navigate('/')
     }
   return (
-    <div className="p-4 flex flex-col ">
-      <h1 className="text-2xl text-white mb-5 font-bold">BuyHive</h1>
+    <div className="p-4 flex flex-col w-full">
+      <div className="flex items-center justify-between w-full mb-5">
+        <h1 className="text-2xl text-white  font-bold">BuyHive</h1>
+        <IoMdClose onClick={()=>props.setisOpen(false)} className="md:hidden " size={25}/>
+      </div>
       <div className="flex p-3 flex-col text-white">
-        <Link to="/admin" onClick={()=>props.setisOpen(false)} className="text-white text-lg font-bold mb-8">
+        <Link to="/admin"  className="text-white text-lg font-bold mb-8">
           Admin DashBoard
         </Link>
         <NavLink

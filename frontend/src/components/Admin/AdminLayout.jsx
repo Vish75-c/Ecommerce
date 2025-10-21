@@ -9,7 +9,7 @@ const AdminLayout = () => {
         setisOpen(!isOpen);
     }
   return (
-    <div className='flex flex-row'>
+    <div className='flex flex-col md:flex-row'>
       {/* Small Screen Navigation */}
       <nav className='flex md:hidden bg-zinc-800 py-6 px-4 items-center'>
         <FaBars onClick={toggleSlide} className='text-white mr-6'size={20}/>
