@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 const AdminUsers = () => {
+  
   const [user, setuser] = useState([]);
   const [userdetail,setuserdetail]=useState({
     name:"",
@@ -47,7 +48,7 @@ const AdminUsers = () => {
               name="name"
               value={userdetail.name}
               onChange={handlechange}
-              className="p-1 text-gray-500 w-[70%] outline-none border rounded-md border-gray-200 focus:ring-2 focus:ring-gray-200 transition-all duration-300"
+              className="p-1 text-gray-500 w-full outline-none border rounded-md border-gray-200 focus:ring-2 focus:ring-gray-200 transition-all duration-300"
             />
           </div>
           <div className="flex flex-col mb-2">
@@ -58,7 +59,7 @@ const AdminUsers = () => {
               required={true}
               value={userdetail.email}
               onChange={handlechange}
-              className="p-1 text-gray-500 w-[70%] outline-none border rounded-md border-gray-200 focus:ring-2 focus:ring-gray-200 transition-all duration-300"
+              className="p-1 text-gray-500 w-full outline-none border rounded-md border-gray-200 focus:ring-2 focus:ring-gray-200 transition-all duration-300"
             />
           </div>
           <div className="flex flex-col mb-2">
@@ -69,12 +70,12 @@ const AdminUsers = () => {
               required={true}
               value={userdetail.password}
               onChange={handlechange}
-              className="p-1 text-gray-500 w-[70%] outline-none border rounded-md border-gray-200 focus:ring-2 focus:ring-gray-200 transition-all duration-300"
+              className="p-1 text-gray-500 w-full outline-none border rounded-md border-gray-200 focus:ring-2 focus:ring-gray-200 transition-all duration-300"
             />
           </div>
           <div className="flex flex-col mb-6">
             <label className="block text-black mb-2 font-bold">Role</label>
-            <select name="role" value={userdetail.role} onChange={handlechange} className="p-2 text-gray-500 w-[70%] outline-none border rounded-md border-gray-200 focus:ring-2 focus:ring-gray-200 transition-all duration-300">
+            <select name="role" value={userdetail.role} onChange={handlechange} className="p-2 text-gray-500 w-full outline-none border rounded-md border-gray-200 focus:ring-2 focus:ring-gray-200 transition-all duration-300">
               <option value="Customer">Customer</option>
               <option value="Admin">Admin</option>
             </select>
@@ -103,7 +104,7 @@ const AdminUsers = () => {
                 </td>
               </tr>)
             })}
-            {user.length==0&&<h1 className="mt-4 font-bold text-2xl ml-4 mb-4">No Records Found</h1>}
+            {user.length==0&&<h1 className="mt-4 font-bold text-xl ml-4 mb-4">No Records Found</h1>}
           </tbody>
         </table>
       </div>

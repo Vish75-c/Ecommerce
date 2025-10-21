@@ -16,6 +16,7 @@ import AdminProduct from "./components/Admin/AdminProduct";
 import AdminUsers from "./components/Admin/AdminUsers";
 import AdminOrder from "./components/Admin/AdminOrder";
 import AdminHome from "./components/Admin/AdminHome";
+import EditOrder from "./components/Admin/EditOrder";
 const App = () => {
   return (
     <BrowserRouter>
@@ -40,6 +41,7 @@ const App = () => {
         <Route path="/admin/products" element={<AdminProduct/>}></Route>
         <Route path="/admin/orders" element={<AdminOrder/>}></Route>
         <Route path="/admin/users" element={<AdminUsers/>}></Route>
+        <Route path="/admin/edit/:id" element={<EditOrder/>}></Route>
         </Route>
 
         {/*  */}
