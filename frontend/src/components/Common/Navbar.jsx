@@ -21,7 +21,7 @@ const Navbar = () => {
       <nav className="container mx-auto flex items-center justify-between py-4 px-6">
         {/* Logo */}
         <div>
-            <Link to='/' className='text-xl font-bold text-gray-700 hover:text-black'>iShop</Link>
+            <Link to='/' className='text-xl font-bold text-gray-700 hover:text-black'><span className='text-2xl'>ꙮ</span>BuyHive</Link>
         </div>
         <div className='hidden md:flex space-x-6'>
             <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Men</Link>

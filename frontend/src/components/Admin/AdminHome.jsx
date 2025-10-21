@@ -30,20 +30,20 @@ const AdminHome = () => {
         <div className='p-4 flex flex-col bg-gray-200 rounded-lg shadow-4xl shadow-emerald-950 hover:scale-105 duration-500 transition-all min-h-[100px]'>
             <span className='font-bold text-xl'>Total Orders</span>
             <span className='font-bold text-lg'>4</span>
-            <Link className='text-blue-500 text-sm tracking-normal font-semibold'>Manage Orders</Link>
+            <Link to='/admin/orders' className='text-blue-500 text-sm tracking-normal font-semibold'>Manage Orders</Link>
         </div>
         <div className='p-4 flex flex-col bg-gray-200 rounded-lg shadow-4xl shadow-emerald-950 hover:scale-105 duration-500 transition-all min-h-[100px]'>
             <span className='font-bold text-xl'>Total Products</span>
             <span className='font-bold text-lg'>40</span>
-            <Link className='text-blue-500 text-sm tracking-normal font-semibold'>Manage Products</Link>
+            <Link to='/admin/products' className='text-blue-500 text-sm tracking-normal font-semibold'>Manage Products</Link>
         </div>
       </div>
-      <div className='w-full  shadow-md rounded-md p-4'>
+      <div className='w-full rounded-md p-4'>
         <h1 className='font-bold text-2xl'>Recent Orders</h1>
-        <div className='relative overflow-hidden rounded-lg bg-gray-100'>
-          <table className='w-full'>
+        <div className='relative overflow-hidden rounded-lg bg-gray-50 shadow-lg overflow-x-scroll md:overflow-x-hidden'>
+          <table className='w-full '>
             <thead>
-              <tr className='bg-gray-100 font-bold text-md'>
+              <tr className='bg-gray-200 font-bold text-md'>
                 <td className='px-4 py-2 text-center'>Orders</td>
                 <td className='px-4 py-2 text-center'>Users</td>
                 <td className='px-4 py-2 text-center'>Total Prize:</td>

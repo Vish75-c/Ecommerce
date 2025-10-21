@@ -11,7 +11,7 @@ const AdminSlideBar = (props) => {
   return (
     <div className="p-4 flex flex-col w-full">
       <div className="flex items-center justify-between w-full mb-5">
-        <h1 className="text-2xl text-white  font-bold">BuyHive</h1>
+        <h1 className="text-2xl text-white  font-bold"><span className='text-2xl'>ꙮ</span>BuyHive</h1>
         <IoMdClose onClick={()=>props.setisOpen(false)} className="md:hidden " size={25}/>
       </div>
       <div className="flex p-3 flex-col text-white">
