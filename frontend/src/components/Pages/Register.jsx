@@ -19,7 +19,7 @@ const Register = () => {
       <div className="md:flex flex-row">
         <div className=" w-full md:w-1/2 p-8 md:p-12 flex items-center justify-center">
         <form onSubmit={(e)=>handlesubmit(e)} className=" p-8 rounded-lg flex flex-col justify-center items-center max-w-md shadow-md border border-gray-300">
-            <h1 className="font-bold text-xl mb-4">iShop</h1>
+            <h1 className="font-bold text-xl mb-4"><span className='text-xl'>ꙮ</span>BuyHive</h1>
             <h1 className="text-xl font-bold mb-3">Hey there!👋🏻</h1>
             <p className=" font-semibold mb-4">Enter your name,email and password to register.</p>
             <div className="w-full mb-4">
