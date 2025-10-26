@@ -4,6 +4,7 @@ import { configDotenv } from "dotenv";
 import db from "./config/db.js";
 import productRoutes from './route/ProductRoutes.js'
 import userRoutes from "./route/userRoutes.js";
+import cartRoutes from "./route/CartRoutes.js"
 configDotenv()
 
 const app=express();
@@ -17,6 +18,7 @@ app.get('/',(req,res)=>{
 })
 app.use('/api/users',userRoutes);
 app.use('/api/product',productRoutes)
+app.use('/api/cart',cartRoutes)
 app.listen(port,()=>{
     console.log(`Server is Running on ${port}`);
 })

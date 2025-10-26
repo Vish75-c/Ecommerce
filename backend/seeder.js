@@ -3,6 +3,7 @@ import productmodel from "./models/Product.js";
 import usermodel from './models/user.js'
 import { configDotenv } from "dotenv";
 import products from './data/products.js'
+import cartModel from "./models/Cart.js";
 configDotenv();
 
 const seedData=async ()=>{
@@ -11,6 +12,7 @@ const seedData=async ()=>{
         console.log("Mongo Connected");
         await usermodel.deleteMany();
         await productmodel.deleteMany();
+        await cartModel.deleteMany();
         const createduser=await usermodel.create({
             name:"AdminUser",
             email:"Admin@gmail.com",
