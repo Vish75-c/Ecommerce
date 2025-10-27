@@ -10,6 +10,8 @@ import orderRoutes from "./route/OrderRoutes.js"
 import uploadRoutes from "./route/uploadRoutes.js"
 import subscribeRoute from "./route/SubscribeRoutes.js"
 import adminRoutes from "./route/AdminRoutes.js"
+import productadminRoutes from "./route/ProductAdminRoutes.js"
+import orderadminRoutes from "./route/AdminOrderRoutes.js"
 configDotenv()
 
 const app=express();
@@ -33,6 +35,8 @@ app.use('/api/subscribe',subscribeRoute);
 
 // Admin Routes
 app.use('/api/admin/users',adminRoutes);
+app.use('/api/admin/products',productadminRoutes)
+app.use('/api/admin/orders',orderadminRoutes)
 app.listen(port,()=>{
     console.log(`Server is Running on ${port}`);
 })
