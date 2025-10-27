@@ -7,6 +7,8 @@ import checkoutRoutes from './route/CheckoutRoutes.js'
 import userRoutes from "./route/userRoutes.js";
 import cartRoutes from "./route/CartRoutes.js"
 import orderRoutes from "./route/OrderRoutes.js"
+import uploadRoutes from "./route/uploadRoutes.js"
+import subscribeRoute from "./route/SubscribeRoutes.js"
 configDotenv()
 
 const app=express();
@@ -23,6 +25,8 @@ app.use('/api/product',productRoutes)
 app.use('/api/cart',cartRoutes)
 app.use('/api/checkout',checkoutRoutes);
 app.use('/api/orders',orderRoutes);
+app.use('/api/upload',uploadRoutes)
+app.use('/api/subscribe',subscribeRoute);
 app.listen(port,()=>{
     console.log(`Server is Running on ${port}`);
 })
