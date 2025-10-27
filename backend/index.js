@@ -9,6 +9,7 @@ import cartRoutes from "./route/CartRoutes.js"
 import orderRoutes from "./route/OrderRoutes.js"
 import uploadRoutes from "./route/uploadRoutes.js"
 import subscribeRoute from "./route/SubscribeRoutes.js"
+import adminRoutes from "./route/AdminRoutes.js"
 configDotenv()
 
 const app=express();
@@ -20,6 +21,8 @@ app.use(express.urlencoded({extended:true}));
 app.get('/',(req,res)=>{
     res.send("Start");
 })
+
+// user Routes
 app.use('/api/users',userRoutes);
 app.use('/api/product',productRoutes)
 app.use('/api/cart',cartRoutes)
@@ -27,6 +30,9 @@ app.use('/api/checkout',checkoutRoutes);
 app.use('/api/orders',orderRoutes);
 app.use('/api/upload',uploadRoutes)
 app.use('/api/subscribe',subscribeRoute);
+
+// Admin Routes
+app.use('/api/admin/users',adminRoutes);
 app.listen(port,()=>{
     console.log(`Server is Running on ${port}`);
 })
