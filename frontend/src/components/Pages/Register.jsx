@@ -3,14 +3,17 @@ import img from "../../assets/register.webp";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../redux/slices/authSlice.js";
 const Register = () => {
     const [name,setname]=useState("");
-    const [username,setusername]=useState("");
+    const [email,setemail]=useState("");
     const [password,setpassword]=useState("");
+    const dispatch=useDispatch();
     const handlesubmit=(e)=>{
-        
-        console.log(username);
         e.preventDefault();
+        dispatch(registerUser({name,email,password}));
+
 
     }
   return (
@@ -28,7 +31,7 @@ const Register = () => {
             </div>
             <div className="w-full mb-4">
                 <label className="block font-bold mb-1">Email</label>
-                <input type="text" onChange={(e)=>setusername(e.target.value)} placeholder="Enter your email" value={username} className="py-2 px-4 w-full outline-none border text-sm border-gray-200 rounded-md" required={true}/>
+                <input type="text" onChange={(e)=>setemail(e.target.value)} placeholder="Enter your email" value={email} className="py-2 px-4 w-full outline-none border text-sm border-gray-200 rounded-md" required={true}/>
             </div>
             <div className="w-full mb-4">
                 <label className="block font-bold mb-1">Password</label>

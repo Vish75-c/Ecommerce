@@ -17,8 +17,11 @@ import AdminUsers from "./components/Admin/AdminUsers";
 import AdminOrder from "./components/Admin/AdminOrder";
 import AdminHome from "./components/Admin/AdminHome";
 import EditOrder from "./components/Admin/EditOrder";
+import {Provider} from "react-redux";
+import store from "./redux/store";
 const App = () => {
   return (
+    <Provider store={store}>
     <BrowserRouter>
       <Routes>
         <Route element={<UserLayout />}>
@@ -47,6 +50,7 @@ const App = () => {
         {/*  */}
       </Routes>
     </BrowserRouter>
+    </Provider>
   );
 };
 

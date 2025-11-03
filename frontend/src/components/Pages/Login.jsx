@@ -3,14 +3,15 @@ import img from "../../assets/login.webp";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 import { Link } from "react-router-dom";
+import { loginUser } from "../../redux/slices/authSlice";
+import { useDispatch } from "react-redux";
 const Login = () => {
-    const [username,setusername]=useState("");
+    const [email,setemail]=useState("");
     const [password,setpassword]=useState("");
+    const dispatch=useDispatch();
     const handlesubmit=(e)=>{
-        
-        console.log(username);
         e.preventDefault();
-
+        dispatch(loginUser({email,password}));
     }
   return (
     <>
@@ -20,10 +21,10 @@ const Login = () => {
         <form onSubmit={(e)=>handlesubmit(e)} className=" p-8 rounded-lg flex flex-col justify-center items-center max-w-md shadow-md border border-gray-300">
             <h1 className="font-bold text-xl mb-4"><span className='text-xl'>ꙮ</span>BuyHive</h1>
             <h1 className="text-xl font-bold mb-3">Hey there!👋🏻</h1>
-            <p className=" font-semibold mb-4">Enter your username and password to Login.</p>
+            <p className=" font-semibold mb-4">Enter your Email and password to Login.</p>
             <div className="w-full mb-4">
                 <label className="block font-bold mb-1">Email</label>
-                <input type="text" onChange={(e)=>setusername(e.target.value)} placeholder="Enter your email" value={username} className="py-2 px-4 w-full outline-none border text-sm border-gray-200 rounded-md" required={true}/>
+                <input type="text" onChange={(e)=>setemail(e.target.value)} placeholder="Enter your email" value={email} className="py-2 px-4 w-full outline-none border text-sm border-gray-200 rounded-md" required={true}/>
             </div>
             <div className="w-full mb-4">
                 <label className="block font-bold mb-1">Password</label>
