@@ -196,25 +196,29 @@ router.get('/new-arrivals',async (req,res)=>{
 })
 // get /api/product/:id to fetch product details
 // access public
-router.get('/:id',async (req,res)=>{
-    try{
-        const id=req.params.id;
-        const product=await productmodel.findById(id);
-        if(product){
-            res.status(200).json(product);
-        }else{
-            res.status(404).json({message:"Product do not exists"});
-        }
-    }catch(err){
-        console.log(err);
-        res.status(500).json({success:false,message:"Server Error"});
+router.get('/:id', async (req, res) => {
+  try { 
+    console.log("Visited");
+    const id = req.params.id; // ✅ correct
+    console.log("Got ID:", id);
+
+    const product = await productmodel.findById(id);
+    if (product) {
+      res.status(200).json(product);
+    } else {
+      res.status(404).json({ message: "Product does not exist" });
     }
-})
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+});
 
 // get /api/product/similar/:id to fetch 4 similar product with same category and gender 
 // access public 
 router.get('/similar/:id',async (req,res)=>{
     try {
+        console.log(visited);
         const id=req.params.id;
         const product=await productmodel.findById(id);
         if(product){

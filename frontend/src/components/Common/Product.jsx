@@ -2,212 +2,199 @@ import React, { useEffect, useState } from "react";
 import { HiMinus, HiPlus } from "react-icons/hi2";
 import { toast } from "react-toastify";
 import Projectgrid from "../Layout/Projectgrid";
-const Product = () => {
-  const selectedproduct = {
-    name: "Stylish Jeans",
-    price: 120,
-    originalprice: 150,
-    description: "This is stylish jeans for an occasion",
-    brand: "FashionBrand",
-    material: "Leader",
-    size: ["S", "M", "L", "XL"],
-    colors: ["Red", "Black"],
-    images: [
-      {
-        url: "https://picsum.photos/500/500?random=1",
-        Alttext: "Stylish Jeans 1",
-      },
-      {
-        url: "https://picsum.photos/500/500?random=2",
-        Alttext: "Stylish Jeans 2",
-      },
-    ],
-  };
-  const arr=[
-    {id:1,name:"Product 1",image:{url:"https://picsum.photos/500/500?random=10",AltText:"Product"},price:"190"},
-    {id:2,name:"Product 2",image:{url:"https://picsum.photos/500/500?random=11",AltText:"Product"},price:"200"},
-    {id:2,name:"Product 3",image:{url:"https://picsum.photos/500/500?random=12",AltText:"Product"},price:"600"},
-    {id:2,name:"Product 4",image:{url:"https://picsum.photos/500/500?random=13",AltText:"Product"},price:"930"}
-  ]
-  const [mainImg, setmainImg] = useState(null);
-  const [color, setcolor] = useState("");
-  const [size, setsize] = useState("");
-  const [quantity, setquantity] = useState(1);
-  const [disable, setdisable] = useState(false);
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { fetchProductDetails, fetchSimilarProducts } from "../../redux/slices/productsSlice";
+import { addToCart } from "../../redux/slices/cartSlice";
+
+const Product = ({ productId }) => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { selectedProduct, loading, error } = useSelector((state) => state.products);
+  const { userId } = useSelector((state) => state.auth);
+
+  const [mainImg, setMainImg] = useState(null);
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
+  const [quantity, setQuantity] = useState(1);
+  const [disable, setDisable] = useState(false);
+
+  // Unified ID for route or prop
+  const productFetchId = productId || id;
+
+  // Fetch product details
   useEffect(() => {
-    if (selectedproduct.images.length > 0) {
-      setmainImg(selectedproduct.images[0].url);
+    if (productFetchId) {
+      dispatch(fetchProductDetails(productFetchId));
+      console.log(selectedProduct);
     }
-  }, []);
-  const handlequantity = (action) => {
-    if (action === "plus") setquantity(quantity + 1);
-    if (action === "minus" && quantity > 1) setquantity(quantity - 1);
+  }, [dispatch, productFetchId]);
+
+  // Set main image when product loads
+  useEffect(() => {
+    if (selectedProduct?.images?.length > 0) {
+      setMainImg(selectedProduct.images[0].url);
+    }
+    console.log("Got",selectedProduct);
+  }, [selectedProduct]);
+
+  // Quantity handlers
+  const handleQuantity = (action) => {
+    if (action === "plus") setQuantity((prev) => prev + 1);
+    if (action === "minus" && quantity > 1) setQuantity((prev) => prev - 1);
   };
-  const handlecart = async () => {
-    console.log("clicked ");
-    if (size === "" || color === "") {
-      toast.warn("Select Size and Color of the Product!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "dark",
-      });
+
+  // Add to cart
+  const handleCart = async () => {
+    if (!size || !color) {
+      toast.warn("Select Size and Color of the Product!", { position: "top-right", autoClose: 2000, theme: "dark" });
       return;
     }
-    toast.success("Added to the cart!", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "dark",
-    });
-    setdisable(true);
-    setInterval(() => {
-      setdisable(false);
-    }, 2000);
+
+    setDisable(true);
+    dispatch(
+      addToCart({
+        productId: productFetchId,
+        quantity,
+        size,
+        color,
+        userId: userId?._id,
+      })
+    )
+      .then(() => {
+        toast.success("Added to the cart!", { position: "top-right", autoClose: 2000, theme: "dark" });
+      })
+      .finally(() => setDisable(false));
   };
+
+  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
+
   return (
     <div className="p-6">
-      <div className="flex mx-auto flex-col  md:flex-row max-w-6xl rounded-lg space-x-6 mb-10 ">
-        <div className="hidden md:flex  md:flex-col space-y-2">
-          {selectedproduct.images.map((item, index) => {
-            return (
+      {selectedProduct && (
+        <div className="flex flex-col md:flex-row max-w-6xl mx-auto rounded-lg space-x-6 mb-10">
+          {/* Image gallery */}
+          <div className="hidden md:flex md:flex-col space-y-2">
+            {selectedProduct.images?.map((img, index) => (
               <img
                 key={index}
-                onClick={() => setmainImg(item.url)}
-                src={item.url}
-                alt={item.Alttext}
-                className={`w-20 h-20 object-cover rounded-lg ${
-                  mainImg === item.url ? "border-2 border-black " : ""
+                src={img.url}
+                alt={img.Alttext || selectedProduct.name}
+                onClick={() => setMainImg(img.url)}
+                className={`w-20 h-20 object-cover rounded-lg cursor-pointer ${
+                  mainImg === img.url ? "border-2 border-black" : ""
                 }`}
               />
-            );
-          })}
-        </div>
-        <div className="w-full md:w-1/2 mb-4">
-          <img
-            src={mainImg}
-            alt="Main Product"
-            className="block rounded-lg object-cover w-full"
-          />
-        </div>
-        {/* Mobile Navigation */}
-
-        <div className="flex flex-row md:hidden mb-4 space-x-2">
-          {selectedproduct.images.map((item, index) => {
-            return (
-              <img
-                key={index}
-                src={item.url}
-                onClick={() => setmainImg(item.url)}
-                alt={item.Alttext}
-                className={`block w-20 h-20 object-cover rounded-lg ${
-                  mainImg === item.url ? "border-2 border-black" : ""
-                }`}
-              />
-            );
-          })}
-        </div>
-        {/* Right Side */}
-        <div className="w-full md:w-1/2 flex flex-col">
-          <h1 className="text-2xl font-bold mb-2">{selectedproduct.name}</h1>
-          <p className="text-gray-500 mb-1 line-through ">
-            ${selectedproduct.originalprice}
-          </p>
-          <p className="text-gray-600 mb-1">${selectedproduct.price}</p>
-          <p className="text-gray-600 mb-2">{selectedproduct.description}</p>
-
-          <span className="mb-1 text-gray-500">Color:</span>
-          <div className="space-x-2 mb-2">
-            {selectedproduct.colors.map((item, index) => {
-              return (
-                <button
-                  key={index}
-                  onClick={() => setcolor(item)}
-                  className={`rounded-full h-7 w-7  ${
-                    color === item
-                      ? "border-2 border-black"
-                      : "border border-gray-700"
-                  }`}
-                  style={{
-                    backgroundColor: item.toLocaleLowerCase(),
-                    filter: "brightness",
-                  }}
-                ></button>
-              );
-            })}
+            ))}
           </div>
-          <span className="mb-1 text-gray-500">Size:</span>
-          <div className="space-x-2 mb-2">
-            {selectedproduct.size.map((item, index) => {
-              return (
+
+          {/* Main image */}
+          <div className="w-full md:w-1/2 mb-4">
+            <img src={mainImg} alt={selectedProduct.name} className="w-full rounded-lg object-cover" />
+          </div>
+
+          {/* Mobile gallery */}
+          <div className="flex md:hidden mb-4 space-x-2">
+            {selectedProduct.images?.map((img, index) => (
+              <img
+                key={index}
+                src={img.url}
+                alt={img.Alttext || selectedProduct.name}
+                onClick={() => setMainImg(img.url)}
+                className={`w-20 h-20 object-cover rounded-lg cursor-pointer ${
+                  mainImg === img.url ? "border-2 border-black" : ""
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Product info */}
+          <div className="w-full md:w-1/2 flex flex-col">
+            <h1 className="text-2xl font-bold mb-2">{selectedProduct.name}</h1>
+            <p className="text-gray-500 mb-1 line-through">
+              ${selectedProduct.discountPrice || selectedProduct.price}
+            </p>
+            <p className="text-gray-600 mb-1">${selectedProduct.price}</p>
+            <p className="text-gray-600 mb-2">{selectedProduct.description}</p>
+
+            {/* Color selector */}
+            <span className="text-gray-500 mb-1">Color:</span>
+            <div className="flex space-x-2 mb-2">
+              {selectedProduct.colors?.map((c, index) => (
                 <button
                   key={index}
-                  onClick={() => setsize(item)}
-                  className={`border border-gray-200   py-1 px-3 ${
-                    size === item
-                      ? "bg-black text-white"
-                      : "bg-white text-black"
+                  onClick={() => setColor(c)}
+                  className={`rounded-full h-7 w-7 border ${
+                    color === c ? "border-black" : "border-gray-700"
+                  }`}
+                  style={{ backgroundColor: c.toLowerCase() }}
+                />
+              ))}
+            </div>
+
+            {/* Size selector */}
+            <span className="text-gray-500 mb-1">Size:</span>
+            <div className="flex space-x-2 mb-2">
+              {selectedProduct.sizes?.map((s, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSize(s)}
+                  className={`py-1 px-3 border ${
+                    size === s ? "bg-black text-white" : "bg-white text-black"
                   }`}
                 >
-                  {item}
+                  {s}
                 </button>
-              );
-            })}
-          </div>
-          <span className="mb-1 text-gray-500">Quantity:</span>
-          <div className="space-x-2 mb-4 flex items-center">
-            <button
-              className="border border-gray-500 bg-gray-200  py-2 px-2"
-              onClick={() => handlequantity("minus")}
-            >
-              <HiMinus />
-            </button>
-            <span>{quantity}</span>
-            <button
-              className="border border-gray-500 bg-gray-200  py-2 px-2"
-              onClick={() => handlequantity("plus")}
-            >
-              <HiPlus />
-            </button>
-          </div>
-          <button
-            onClick={() => handlecart()}
-            disabled={disable}
-            className="py-2 w-full text-white bg-black rounded-lg mb-4"
-          >
-            ADD TO CART
-          </button>
+              ))}
+            </div>
 
-          <p className=" mb-4 font-bold text-lg">Characteristics:</p>
-          <table className="w-full">
-            <tbody className="text-sm">
-              <tr className="">
-                <td className="py-1">Brand</td>
-                <td className="text-gray-600 py-1 ">{selectedproduct.brand}</td>
-              </tr>
-              <tr>
-                <td className="py-1">Material</td>
-                <td className="text-gray-600 py-1">
-                  {selectedproduct.material}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            {/* Quantity selector */}
+            <span className="text-gray-500 mb-1">Quantity:</span>
+            <div className="flex items-center space-x-2 mb-4">
+              <button className="py-2 px-2 border bg-gray-200" onClick={() => handleQuantity("minus")}>
+                <HiMinus />
+              </button>
+              <span>{quantity}</span>
+              <button className="py-2 px-2 border bg-gray-200" onClick={() => handleQuantity("plus")}>
+                <HiPlus />
+              </button>
+            </div>
+
+            {/* Add to cart button */}
+            <button
+              onClick={handleCart}
+              disabled={disable}
+              className="w-full py-2 mb-4 rounded-lg bg-black text-white"
+            >
+              ADD TO CART
+            </button>
+
+            {/* Characteristics */}
+            <p className="font-bold text-lg mb-4">Characteristics:</p>
+            <table className="w-full text-sm">
+              <tbody>
+                <tr>
+                  <td className="py-1">Brand</td>
+                  <td className="py-1 text-gray-600">{selectedProduct.brand}</td>
+                </tr>
+                <tr>
+                  <td className="py-1">Material</td>
+                  <td className="py-1 text-gray-600">{selectedProduct.material}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-       
-      </div>
-       <div className="max-w-6xl flex flex-col mx-auto justify-center">
+      )}
+
+      {/* Similar products */}
+      {/* {similarProducts?.length > 0 && (
+        <div className="max-w-6xl mx-auto flex flex-col justify-center">
           <h1 className="text-center font-bold text-2xl mb-5">You May Also Like</h1>
-          <Projectgrid product={arr}/>
+          <Projectgrid product={similarProducts} />
         </div>
+      )} */}
     </div>
   );
 };
