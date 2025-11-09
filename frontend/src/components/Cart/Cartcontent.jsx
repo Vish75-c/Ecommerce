@@ -1,29 +1,21 @@
-import React from 'react'
+import React, { use, useEffect } from 'react'
 import { HiMinus, HiPlus } from 'react-icons/hi2'
 import { RiDeleteBackFill, RiDeleteBin5Fill } from 'react-icons/ri'
+import { useDispatch, useSelector } from 'react-redux';
+import { updateCartItemQuantity } from '../../redux/slices/cartSlice';
 
-const Cartcontent = () => {
-    const product=[
-        {
-            productid:1,
-            name:"T-shirt",
-            size:'M',
-            color:"Red",
-            quantity:1,
-            price:15,
-            image:"https://picsum.photos/200?random=1"
-        },
-        {
-            productid:2,
-            name:"Jeans",
-            size:'L',
-            color:"Blue",
-            quantity:1,
-            price:25,
-            image:"https://picsum.photos/200?random=2"
-        }
-
-    ]
+const Cartcontent = ({cart,userId,guestId}) => {
+    const product=cart.products;
+    const dispatch=useDispatch();
+    const {cartNew,loading,error}=useSelector((state)=>state.cart);
+    const handleQuantity=(index,check,productId)=>{
+        if(check==1){
+        dispatch(updateCartItemQuantity({quantity:product[index].quantity-1,productId,userId,guestId}))
+    }else{
+        dispatch(updateCartItemQuantity({quantity:product[index].quantity-1,productId,userId,guestId}))
+    }
+    product=[...cartNew];
+    }
   return (
     <div>
       {
@@ -37,7 +29,7 @@ const Cartcontent = () => {
                         <h1 className='font-bold mb-2'>{item.name}</h1>
                         <p className='text-gray-700 text-xs mb-2'>size:{item.size} | color:{item.color}</p>
                         <div className='flex space-x-2 mb-2 '>
-                        <div className='border p-1 border-gray-200 flex justify-between items-center'><HiMinus/></div>
+                        <div onClick={handleQuantity(index,1,item._id)}className='border p-1 border-gray-200 flex justify-between items-center'><HiMinus/></div>
                         
                         <span>{item.quantity}</span>
                         <div className='border p-1 border-gray-200 flex justify-between items-center'><HiPlus/></div>

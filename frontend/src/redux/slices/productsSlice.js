@@ -31,7 +31,6 @@ export const fetchProductsByFilters = createAsyncThunk(
     if (material) query.append("material", material);
     if (brand) query.append("brand", brand);
     if (limit) query.append("limit", limit);
-
     const response = await axios.get(`http://localhost:3000/api/product?${query.toString()}`);
     return response.data;
   }
@@ -48,10 +47,7 @@ export const fetchProductDetails = createAsyncThunk(
         ? idParam?._id || idParam?.id || JSON.stringify(idParam)
         : idParam;
 
-    console.log("Resolved id for fetch:", id);
-
     const response = await axios.get(`http://localhost:3000/api/product/${id}`);
-    console.log(response.data);
     return response.data;
   }
 );
@@ -86,10 +82,10 @@ const initialState = {
   error: null,
   filters: {
     category: "",
-    size: "",
-    color: "",
+    sizes: "",
+    colors: "",
     gender: "",
-    brand: "",
+    brands: "",
     minPrice: "",
     maxPrice: "",
     sortBy: "",
@@ -120,6 +116,7 @@ const productsSlice = createSlice({
       .addCase(fetchProductsByFilters.fulfilled, (state, action) => {
         state.loading = false;
         state.products = Array.isArray(action.payload) ? action.payload : [];
+     
       })
       .addCase(fetchProductsByFilters.rejected, (state, action) => {
         state.loading = false;

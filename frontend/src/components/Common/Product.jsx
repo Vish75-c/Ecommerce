@@ -6,12 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchProductDetails, fetchSimilarProducts } from "../../redux/slices/productsSlice";
 import { addToCart } from "../../redux/slices/cartSlice";
+import { ToastContainer } from "react-toastify";
 
 const Product = ({ productId }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { selectedProduct, loading, error } = useSelector((state) => state.products);
-  const { userId } = useSelector((state) => state.auth);
+  const { selectedProduct, loading, error,similarProducts } = useSelector((state) => state.products);
+  const { userId ,guestId} = useSelector((state) => state.auth);
 
   const [mainImg, setMainImg] = useState(null);
   const [color, setColor] = useState("");
@@ -21,12 +22,11 @@ const Product = ({ productId }) => {
 
   // Unified ID for route or prop
   const productFetchId = productId || id;
-
   // Fetch product details
   useEffect(() => {
     if (productFetchId) {
       dispatch(fetchProductDetails(productFetchId));
-      console.log(selectedProduct);
+      dispatch(fetchSimilarProducts(productFetchId));
     }
   }, [dispatch, productFetchId]);
 
@@ -35,7 +35,7 @@ const Product = ({ productId }) => {
     if (selectedProduct?.images?.length > 0) {
       setMainImg(selectedProduct.images[0].url);
     }
-    console.log("Got",selectedProduct);
+    
   }, [selectedProduct]);
 
   // Quantity handlers
@@ -58,7 +58,10 @@ const Product = ({ productId }) => {
         quantity,
         size,
         color,
+        guestId,
         userId: userId?._id,
+
+  
       })
     )
       .then(() => {
@@ -72,6 +75,18 @@ const Product = ({ productId }) => {
 
   return (
     <div className="p-6">
+       <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       {selectedProduct && (
         <div className="flex flex-col md:flex-row max-w-6xl mx-auto rounded-lg space-x-6 mb-10">
           {/* Image gallery */}
@@ -189,12 +204,12 @@ const Product = ({ productId }) => {
       )}
 
       {/* Similar products */}
-      {/* {similarProducts?.length > 0 && (
+       {similarProducts?.length > 0 && (
         <div className="max-w-6xl mx-auto flex flex-col justify-center">
           <h1 className="text-center font-bold text-2xl mb-5">You May Also Like</h1>
           <Projectgrid product={similarProducts} />
         </div>
-      )} */}
+      )} 
     </div>
   );
 };

@@ -133,9 +133,10 @@ router.delete('/',async (req,res)=>{
 router.get("/",async (req,res)=>{
     try {
         const {userId,guestId}=req.query;
+   
         const cart=await findcart(userId,guestId);
-        if(!cart)res.status(403).json({message:"Cart Not Found"});
-        res.status(200).json(cart);
+        if(!cart)return res.status(403).json({message:"Cart Not Found"});
+        return res.status(200).json(cart);
     } catch (error) {
         res.status(500).send("Server Error");
     }

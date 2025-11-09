@@ -158,6 +158,7 @@ router.get('/',async (req,res)=>{
             }
         }
         const product=await productmodel.find(query).sort(sort).limit(Number(limit)||0);
+      
         res.status(200).json(product);
     }catch(err){
         console.log(err);
@@ -198,10 +199,7 @@ router.get('/new-arrivals',async (req,res)=>{
 // access public
 router.get('/:id', async (req, res) => {
   try { 
-    console.log("Visited");
     const id = req.params.id; // ✅ correct
-    console.log("Got ID:", id);
-
     const product = await productmodel.findById(id);
     if (product) {
       res.status(200).json(product);
@@ -218,7 +216,7 @@ router.get('/:id', async (req, res) => {
 // access public 
 router.get('/similar/:id',async (req,res)=>{
     try {
-        console.log(visited);
+        
         const id=req.params.id;
         const product=await productmodel.findById(id);
         if(product){

@@ -24,10 +24,10 @@ const Navbar = () => {
             <Link to='/' className='text-xl font-bold text-gray-700 hover:text-black'><span className='text-2xl'>ꙮ</span>BuyHive</Link>
         </div>
         <div className='hidden md:flex space-x-6'>
-            <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Men</Link>
-            <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Women</Link>
-            <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Top Wear</Link>
-            <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Buttom Wear</Link>
+            <Link to='/collections/all?gender=Men' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Men</Link>
+            <Link to='/collections/all?gender=Women' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Women</Link>
+            <Link to='/collections/all?category=Top Wear' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Top Wear</Link>
+            <Link to='/collections/all?category=Bottom Wear' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Bottom Wear</Link>
         </div>
         {/* right icons */}
         <div className="flex items-center space-x-4">
@@ -51,10 +51,10 @@ const Navbar = () => {
         </div>
         <div className='flex flex-col p-4 space-y-3'>
           <h1 className='text-black text-xl font-bold'>Menu</h1>
-                      <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Men</Link>
-            <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Women</Link>
-            <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Top Wear</Link>
-            <Link to='/collections/all' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Buttom Wear</Link>
+                      <Link to='/collections/all?gender=Men' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Men</Link>
+            <Link to='/collections/all?gender=Women' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Women</Link>
+            <Link to='/collections/all?category=Top Wear' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Top Wear</Link>
+            <Link to='/collections/all?category=Bottom Wear' className='text-gray-700 hover:text-black font-medium uppercase text-sm'>Buttom Wear</Link>
         </div>
       </div>
     </>

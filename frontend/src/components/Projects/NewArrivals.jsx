@@ -14,7 +14,6 @@ const NewArrivals = () => {
             try {
                 const response=await axios.get(`http://localhost:3000/api/product/new-arrivals`);
                 setarrivals(response.data);
-                console.log(response.data);
             } catch (error) {
                 console.log(error);
             }

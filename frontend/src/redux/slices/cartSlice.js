@@ -26,8 +26,10 @@ export const fetchCart=createAsyncThunk("cart/fetchCart",async ({userId,guestId}
 // Addd an item to the cart foor a user or guest
 
 export const addToCart=createAsyncThunk('cart/addToCart',async({productId,quantity,size,color,guestId,userId},{rejectWithValue})=>{
+    
     try {
-        const response=await axios.pos('http://localhost:3000/api/cart',{
+      
+        const response=await axios.post('http://localhost:3000/api/cart',{
             productId,
             quantity,
             size,
@@ -101,15 +103,18 @@ const cartSlice=createSlice({
             state.cart={products:[]}
             localStorage.removeItem("cart")
         },
-        extraReducers:(builder)=>{
+        
+    },
+    extraReducers:(builder)=>{
             builder.addCase(fetchCart.pending,(state)=>{
                 state.loading=true
                 state.error=null
             }).addCase(fetchCart.fulfilled,(state,action)=>{
                 state.loading=false;
+                
                 state.cart=action.payload;
                 saveCartToStorage(action.payload)
-            }).addCase(fetchCart.pending,(state)=>{
+            }).addCase(fetchCart.rejected,(state,action)=>{
                 state.loading=false
                 state.error=action.error.message||"Failed to fetch Cart";
             }).addCase(addToCart.pending,(state)=>{
@@ -119,7 +124,7 @@ const cartSlice=createSlice({
                 state.loading=false;
                 state.cart=action.payload;
                 saveCartToStorage(action.payload)
-            }).addCase(addToCart.pending,(state)=>{
+            }).addCase(addToCart.rejected,(state,action)=>{
                 state.loading=false
                 state.error=action.payload?.message||"Failed to add To Cart";
             }).addCase(updateCartItemQuantity.pending,(state)=>{
@@ -129,7 +134,7 @@ const cartSlice=createSlice({
                 state.loading=false;
                 state.cart=action.payload;
                 saveCartToStorage(action.payload)
-            }).addCase(updateCartItemQuantity.pending,(state)=>{
+            }).addCase(updateCartItemQuantity.rejected,(state,action)=>{
                 state.loading=false
                 state.error=action.payload?.message||"Failed to update item quantity Cart";
             }).addCase(removeFromCart.pending,(state)=>{
@@ -139,7 +144,7 @@ const cartSlice=createSlice({
                 state.loading=false;
                 state.cart=action.payload;
                 saveCartToStorage(action.payload)
-            }).addCase(removeFromCart.pending,(state)=>{
+            }).addCase(removeFromCart.rejected,(state,action)=>{
                 state.loading=false
                 state.error=action.payload?.message||"Failed to remove item";
             }).addCase(mergeCart.pending,(state)=>{
@@ -149,11 +154,10 @@ const cartSlice=createSlice({
                 state.loading=false;
                 state.cart=action.payload;
                 saveCartToStorage(action.payload)
-            }).addCase(mergeCart.pending,(state)=>{
+            }).addCase(mergeCart.rejected,(state,action)=>{
                 state.loading=false
                 state.error=action.payload?.message||"Failed to fetch Cart";
             })
-        }
     }
 })
 

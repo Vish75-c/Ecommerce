@@ -60,8 +60,10 @@ const FilterSlideBar = () => {
       minPrice: params.minPrice || 0,
       maxPrice: params.maxPrice || 100,
     });
+   
     setpriceRange([0,100]);
   }, [searchparams]);
+
   const handlefilterchange = (e) => {
     const { name, value, checked, type } = e.target;
     // console.log({name,value,checked,type});
@@ -78,7 +80,7 @@ const FilterSlideBar = () => {
 
     handleURlChange(newFilter);
     setfilter(newFilter);
-    console.log(newFilter);
+    
   };
   const handlepricechange=(e)=>{
     const newFilter={...filter,minPrice:0,maxPrice:e.target.value}

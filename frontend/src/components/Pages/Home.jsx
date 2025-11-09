@@ -64,7 +64,7 @@ const Home = () => {
       <h1 className="text-3xl font-bold text-black text-center mt-10">
         Best Seller
       </h1>
-      {bestSellerProduct&&bestSellerProduct._id&&<Product productId={bestSellerProduct._id} />}
+      {bestSellerProduct&&<Product productId={bestSellerProduct._id} />}
 
       <div className="container mx-auto p-6 md:p-20">
         <h2 className="text-3xl font-bold text-center mb-6">
