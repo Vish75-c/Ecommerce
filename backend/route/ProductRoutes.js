@@ -106,65 +106,81 @@ router.delete('/:id',protect,checkadmin,async (req,res)=>{
 // get /api/product to fetch items according to filter logic
 // public access get request
 
-router.get('/',async (req,res)=>{
-    try{
-        const {collection,size,color,gender,minPrice,maxPrice,sortBy,search,category,material,brand,limit}=req.query;
-        const query={};
-        // filter logic
-        if(collection&&collection.toLocaleLowerCase()!=='all'){
-            query.collections=collection;
-        }
-        if(category&&category.toLocaleLowerCase()!=='all'){
-            query.category=category;
-        }
-        if(color){
-            query.colors={$in:color.split(",")}
-        }
-        if(brand){
-            query.brand={$in:brand.split(",")}
-        }
-        if(size){
-            query.sizes={$in:size.split(",")}
-        }
-        if(material){
-            query.material={$in:material.split(",")}
-        }
-        if(gender){
-            query.gender=gender
-        }
-        if(maxPrice||minPrice){
-            query.price={};
-            if(minPrice)query.price.$gte=Number(minPrice)
-            if(maxPrice)query.price.$lte=Number(maxPrice)
-        }
-        // search logic;
-        if(search){
-            query.$or=[
-                {name:{$regex:search,options:'i'}},
-                {description:{$regex:search,options:'i'}}
-            ];
-        }
-        // sort logic
-        const sort={};
-        if(sortBy){
-            switch(sortBy){
-            case 'priceAsc':
-                sort:{price:1};break;
-            
-            case "priceDesc":
-                sort:{price:-1};break;
-            case "popularity":
-                sort:{rating:-1};break;
-            }
-        }
-        const product=await productmodel.find(query).sort(sort).limit(Number(limit)||0);
-      
-        res.status(200).json(product);
-    }catch(err){
-        console.log(err);
-        res.status(500).send("Server Error");
+router.get('/', async (req, res) => {
+  try {
+    console.log(req.query);
+
+    const {
+      collection,
+      size,
+      color,
+      gender,
+      minPrice,
+      maxPrice,
+      sortBy,
+      search,
+      category,
+      material,
+      brand,
+      limit
+    } = req.query;
+
+    const query = {};
+
+    // Filter logic
+    if (collection && collection.toLowerCase() !== 'all') {
+      query.collections = collection;
     }
-})
+    if (category && category.toLowerCase() !== 'all') {
+      query.category = category;
+    }
+    if (color) query.colors = { $in: color.split(',') };
+    if (brand) query.brand = { $in: brand.split(',') };
+    if (size) query.sizes = { $in: size.split(',') };
+    if (material) query.material = { $in: material.split(',') };
+    if (gender) query.gender = gender;
+    if (maxPrice || minPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = Number(minPrice);
+      if (maxPrice) query.price.$lte = Number(maxPrice);
+    }
+
+    // ✅ FIXED search logic
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } }, 
+        { description: { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    // Sort logic
+    const sort = {};
+    if (sortBy) {
+      switch (sortBy) {
+        case 'priceAsc':
+          sort.price = 1;
+          break;
+        case 'priceDesc':
+          sort.price = -1;
+          break;
+        case 'popularity':
+          sort.rating = -1;
+          break;
+      }
+    }
+
+    const products = await productmodel
+      .find(query)
+      .sort(sort)
+      .limit(Number(limit) || 0);
+
+    res.status(200).json(products);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
 // get /api/product/best-seller to find best seller
 // public 
 

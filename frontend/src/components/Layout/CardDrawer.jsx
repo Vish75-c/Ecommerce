@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCart } from '../../redux/slices/cartSlice';
 const CardDrawer = ({open,toggledrawer}) => {
   const navigate=useNavigate();
-  const {userId,guestId}=useSelector((state)=>state.auth);
+  const {user,guestId}=useSelector((state)=>state.auth);
   const {cart,loading,error}=useSelector((state)=>state.cart)
-  const user=userId||null;
+  const userId=user||null;
   const dispatch=useDispatch();
   useEffect(()=>{
     dispatch(fetchCart({userId,guestId}));

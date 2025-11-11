@@ -32,6 +32,7 @@ const Collections = () => {
       maxPrice: parsedParams.maxPrice || 100,
     };
     dispatch(fetchProductsByFilters({ collection, ...processedParams }));
+    
   }, [dispatch, searchParams, collection]);
 
 

@@ -7,6 +7,7 @@ import { IoMdClose } from 'react-icons/io';
 import { HiBars2, HiMiniXMark } from 'react-icons/hi2'
 import Searchbar from './Searchbar'
 import CardDrawer from '../Layout/CardDrawer'
+import { useSelector } from 'react-redux';
 const Navbar = () => {
   const [open,setopen]=useState(false);
     const toggledrawer=()=>{
@@ -16,6 +17,8 @@ const Navbar = () => {
     const togglemenu=()=>{
       setmenu(!menu);
     }
+    const {cart}=useSelector((state)=>state.cart);
+    const cartItemCount=cart?.products?.reduce((total,product)=>total+product.quantity,0)||0;
   return (
     <>
       <nav className="container mx-auto flex items-center justify-between py-4 px-6">
@@ -32,10 +35,10 @@ const Navbar = () => {
         {/* right icons */}
         <div className="flex items-center space-x-4">
           <Link to='/admin' className='text-white text-sm py-1 opacity-80 rounded-md px-3 bg-black'>Admin</Link>
-            <Link to='/login' className='hover:text-black '><HiOutlineUser className='h-6 w-6 text-gray-700'/></Link>
+            <Link to='/profile' className='hover:text-black '><HiOutlineUser className='h-6 w-6 text-gray-700'/></Link>
             <button className='relative hover:text-black text-gray-700' onClick={()=>(setopen(true))}>
                 <HiOutlineShoppingBag className='h-6 w-6 text-gray-700'/>
-                <span className='absolute -top-1 bg-[#ea2e0e] text-white text-xs rounded-full px-2 py-.5'>4</span>
+                {cartItemCount>0&&(<span className='absolute -top-1 bg-[#ea2e0e] text-white text-xs rounded-full px-2 py-.5'>{cartItemCount}</span>)}
             </button>
              {/* search */}
              <Searchbar/>

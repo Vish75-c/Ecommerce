@@ -106,6 +106,7 @@ const FilterSlideBar = () => {
       <div className="flex flex-col mb-6">
         <label className="block font-medium text-md mb-2 text-gray-700">
           Category:
+      
         </label>
         {category.map((category) => {
           return (

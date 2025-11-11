@@ -13,15 +13,24 @@ const saveCartToStorage=(cart)=>{
 
 // fetch cart from a user or guest
 
-export const fetchCart=createAsyncThunk("cart/fetchCart",async ({userId,guestId},{rejectWithValue})=>{
+export const fetchCart = createAsyncThunk(
+  "cart/fetchCart",
+  async ({ userId, guestId }, { rejectWithValue }) => {
     try {
-        const response=await axios.get(`http://localhost:3000/api/cart`,{params:{userId,guestId}})
-        return response.data;
+      // ensure we send only _id if userId is an object
+      const id = typeof userId === "object" ? userId._id : userId;
+
+      const response = await axios.get("http://localhost:3000/api/cart", {
+        params: { userId: id, guestId },
+      });
+
+      return response.data;
     } catch (error) {
-        console.log(error);
-        return rejectWithValue(error.response.data);
+      console.error("Fetch cart error:", error.response?.data || error.message);
+      return rejectWithValue(error.response?.data || "Failed to fetch cart");
     }
-})
+  }
+);
 
 // Addd an item to the cart foor a user or guest
 
@@ -50,6 +59,7 @@ export const updateCartItemQuantity=createAsyncThunk('cart/updateCartItemQuantit
         const response=await axios.put('http://localhost:3000/api/cart',{
             productId,
             userId,
+            guestId,
             quantity,
             size,
             color,
