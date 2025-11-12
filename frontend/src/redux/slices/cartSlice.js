@@ -16,12 +16,21 @@ const saveCartToStorage=(cart)=>{
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
   async ({ userId, guestId }, { rejectWithValue }) => {
+
     try {
+        console.log(userId);
+      const token = localStorage.getItem("userToken");
+
+      const headers = token
+        ? { Authorization: `Bearer ${token}` }
+        : {};
+
       // ensure we send only _id if userId is an object
       const id = typeof userId === "object" ? userId._id : userId;
 
       const response = await axios.get("http://localhost:3000/api/cart", {
         params: { userId: id, guestId },
+        headers,
       });
 
       return response.data;

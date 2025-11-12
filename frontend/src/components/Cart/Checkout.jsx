@@ -1,7 +1,6 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Paypalbtn from "./Paypalbtn";
+// import Paypalbtn from "./Paypalbtn"; // keep if you re-enable real PayPal
 import { useDispatch, useSelector } from "react-redux";
 import { createCheckout } from "../../redux/slices/checkoutSlice";
 import axios from "axios";
@@ -19,12 +18,15 @@ const Checkout = () => {
     lastname: "",
     address: "",
     city: "",
-    postal: "",
+    postalCode: "",
     country: "",
     phonenumber: "",
   });
 
-  // Ensure cart is loaded before proceeding
+  // Guards to prevent duplicate actions
+  const [isCreating, setIsCreating] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
+
   useEffect(() => {
     if (!cart || !cart.products || cart.products.length === 0) {
       navigate("/");
@@ -32,53 +34,112 @@ const Checkout = () => {
   }, [cart, navigate]);
 
   const handleChange = (e) => {
-    setShipping({
-      ...shipping,
+    setShipping((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
 
+  // Only called by form submit (onSubmit)
   const handleCreateCheckout = async (e) => {
     e.preventDefault();
 
-    if (cart && cart.products.length > 0) {
+    if (isCreating) return; // prevent double submit
+    if (!cart || !cart.products || cart.products.length === 0) return;
+
+    // Basic validation
+    if (
+      !shipping.address ||
+      !shipping.city ||
+      !shipping.postalCode ||
+      !shipping.country
+    ) {
+      alert("Please fill all required shipping address fields");
+      return;
+    }
+
+    try {
+      setIsCreating(true);
+
       const res = await dispatch(
         createCheckout({
-          checkoutItems: cart.products,
-          shippingAddress: shipping,
+          checkoutItem: cart.products,
+          shippingAddress: {
+            address: shipping.address,
+            city: shipping.city,
+            postalCode: shipping.postalCode,
+            country: shipping.country,
+            phonenumber: shipping.phonenumber,
+            firstname: shipping.firstname,
+            lastname: shipping.lastname,
+          },
           paymentMethod: "Paypal",
           totalPrice: cart.totalPrice,
         })
       );
 
+      // createCheckout resolved
       if (res.payload && res.payload._id) {
+        console.log("✅ Checkout created:", res.payload._id);
         setCheckoutId(res.payload._id);
       } else {
-        console.error("Checkout creation failed:", res);
+        console.error("❌ Checkout creation failed:", res);
+        alert("Failed to create checkout. See console.");
       }
+    } catch (err) {
+      console.error("❌ createCheckout error:", err);
+      alert("Failed to create checkout. See console.");
+    } finally {
+      setIsCreating(false);
     }
   };
 
-  const handlePaymentSuccess = async (details) => {
+  // Payment handler: does NOT accept the click event.
+  const handlePaymentSuccess = async () => {
+    if (!checkoutId) {
+      alert("No checkout created yet. Click Continue to Payment first.");
+      return;
+    }
+    if (isPaying) return; // prevent double payment calls
+
     try {
+      setIsPaying(true);
+
+      // Use a safe, serializable mock paymentDetails object.
+      // Replace with real PayPal details when integrating the real SDK.
+      const paymentDetails = {
+        provider: "mock-paypal",
+        transactionId: `mock_tx_${Date.now()}`,
+        amount: cart?.totalPrice || 0,
+      };
+
       const response = await axios.put(
-        `http://localhost:3000/api/pay`,
+        `http://localhost:3000/api/checkout/${checkoutId}/pay`,
         {
           paymentStatus: "paid",
-          paymentDetails: details,
+          paymentDetails,
         },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+            "Content-Type": "application/json",
           },
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
+        // finalize order on server
         await handleFinalizeCheckout(checkoutId);
+      } else {
+        console.error("Unexpected response updating payment:", response);
+        alert("Payment update failed. See console.");
       }
     } catch (error) {
-      console.log(error);
+      console.error("❌ Payment update error:", error);
+      // If you previously saw a 404, ensure your backend route PUT /api/checkout/:id/pay exists
+      alert("Payment update failed. See console for details.");
+    } finally {
+      setIsPaying(false);
     }
   };
 
@@ -90,6 +151,7 @@ const Checkout = () => {
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+            "Content-Type": "application/json",
           },
         }
       );
@@ -97,10 +159,12 @@ const Checkout = () => {
       if (response.status === 200) {
         navigate("/order-confirmation");
       } else {
-        console.log("Checkout finalization failed");
+        console.error("Checkout finalization failed:", response);
+        alert("Checkout finalization failed. See console.");
       }
     } catch (error) {
-      console.error(error);
+      console.error("❌ Finalize error:", error);
+      alert("Checkout finalization failed. See console.");
     }
   };
 
@@ -112,7 +176,6 @@ const Checkout = () => {
 
   return (
     <div className="px-6 py-6 mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 tracking-tighter">
-      {/* Left side - Shipping info */}
       <div className="p-8 space-y-2">
         <h1 className="mb-4 font-medium text-2xl uppercase">Checkout</h1>
         <h3 className="mb-4 font-medium text-lg">Contact Details</h3>
@@ -128,6 +191,8 @@ const Checkout = () => {
         </div>
 
         <p className="text-lg mb-4">Delivery</p>
+
+        {/* Only onSubmit triggers createCheckout */}
         <form onSubmit={handleCreateCheckout} className="text-gray-500">
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div className="flex flex-col">
@@ -178,8 +243,8 @@ const Checkout = () => {
               <label className="block mb-1 text-gray-500">Postal Code</label>
               <input
                 type="text"
-                name="postal"
-                value={shipping.postal}
+                name="postalCode"
+                value={shipping.postalCode}
                 onChange={handleChange}
                 className="p-1 border border-gray-200 rounded-sm focus:ring-1 outline-none focus:ring-gray-200"
               />
@@ -211,18 +276,28 @@ const Checkout = () => {
           {checkoutId.length === 0 ? (
             <button
               type="submit"
-              className="text-white bg-black rounded-sm w-full p-2"
+              disabled={isCreating}
+              className={`text-white bg-black rounded-sm w-full p-2 ${
+                isCreating ? "opacity-60 cursor-not-allowed" : ""
+              }`}
             >
-              Continue to Payment
+              {isCreating ? "Creating..." : "Continue to Payment"}
             </button>
           ) : (
             <div>
               <h1 className="mb-2">Pay Using PayPal</h1>
-              <Paypalbtn
-                amount={cart.totalPrice}
-                onSuccess={handlePaymentSuccess}
-                onError={() => alert("Payment Failed")}
-              />
+
+              {/* Mock PayPal button — type="button" prevents form submit and we call handler with safe payload */}
+              <button
+                type="button"
+                onClick={() => handlePaymentSuccess()}
+                disabled={isPaying}
+                className={`w-[50%] p-1 font-bold bg-yellow-200 rounded-2xl text-black ${
+                  isPaying ? "opacity-60 cursor-not-allowed" : ""
+                }`}
+              >
+                {isPaying ? "Processing..." : "Paypal"}
+              </button>
             </div>
           )}
         </form>
@@ -239,7 +314,7 @@ const Checkout = () => {
             <div className="mr-4">
               <img
                 src={item.image}
-                alt="item-image"
+                alt="item"
                 className="w-20 h-20 rounded-lg object-cover"
               />
             </div>

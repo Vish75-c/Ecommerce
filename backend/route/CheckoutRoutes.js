@@ -11,22 +11,23 @@ const router = Router();
 // @access  Private
 router.post("/", protect, async (req, res) => {
   try {
-    const { checkoutItems, shippingAddress, paymentMethod, totalPrice } = req.body;
+    const { checkoutItems, checkoutItem, shippingAddress, paymentMethod, totalPrice } = req.body;
+const items = checkoutItems || checkoutItem;
 
-    if (!checkoutItems || checkoutItems.length === 0) {
-      return res.status(400).json({ message: "No items in checkout." });
-    }
+if (!items || items.length === 0) {
+  return res.status(400).json({ message: "No items in checkout." });
+}
 
-    const checkout = await checkoutModel.create({
-      userId: req.user._id,
-      checkoutItem: checkoutItems,
-      shippingAddress,
-      paymentMethod,
-      totalPrice,
-      paymentStatus: "pending",
-      isPaid: false,
-      isFinalised: false,
-    });
+const checkout = await checkoutModel.create({
+  userId: req.user._id,
+  checkoutItem: items,
+  shippingAddress,
+  paymentMethod,
+  totalPrice,
+  paymentStatus: "pending",
+  isPaid: false,
+  isFinalised: false,
+});
 
     console.log("✅ Checkout created for user:", req.user._id);
     res.status(200).json(checkout);
