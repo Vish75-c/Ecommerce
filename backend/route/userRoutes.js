@@ -51,7 +51,7 @@ router.post('/login',async (req,res)=>{
 // Profile route protect private access api/users/profile 
 
 router.get('/profile',protect,async (req,res)=>{
-    
+     
     res.status(200).json(req.user);
 })
-export default router
+export default router   

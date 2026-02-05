@@ -14,8 +14,12 @@ const Login = () => {
   const location = useLocation();
 
   const { user, guestId } = useSelector((state) => state.auth);
-  const userId = user;
-
+   let userId = undefined;
+if (user) {
+  userId = user._id; // ✅ fixed typo
+}
+ 
+  
   // Get redirect query (if user came from checkout or product page)
   const redirect = new URLSearchParams(location.search).get("redirect") || "/";
   const isCheckoutRedirect = redirect.includes("checkout");
@@ -24,7 +28,9 @@ const Login = () => {
     if (userId && !hasMerged) {
       if (guestId) {
         // ✅ Merge guest cart once after successful login
+        console.log(userId,guestId);
         dispatch(mergeCart({ guestId, userId })).then(() => {
+          
           setHasMerged(true);
           navigate(isCheckoutRedirect ? "/checkout" : "/");
         });
@@ -41,7 +47,7 @@ const Login = () => {
   };
 
   return (
-    <div className="md:flex flex-row">
+    <div className="md:flex flex-row mt-10">
       {/* Left Side - Form */}
       <div className="w-full md:w-1/2 p-8 md:p-12 flex items-center justify-center">
         <form

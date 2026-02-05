@@ -1,12 +1,18 @@
 import React from "react";
 import { FaBox, FaSignOutAlt,FaBoxOpen, FaClipboard, FaStore, FaUser, FaCross, FaXRay } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
+import { useDispatch } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../../redux/slices/authSlice";
+import { clearCart } from "../../redux/slices/cartSlice";
 const AdminSlideBar = (props) => {
     const navigate=useNavigate();
+    const dispatch=useDispatch();
     const handleLogout=()=>{
-        navigate('/')
+      dispatch(logout());
+      dispatch(clearCart());
+        navigate('/login')
     }
   return (
     <div className="p-4 flex flex-col w-full">

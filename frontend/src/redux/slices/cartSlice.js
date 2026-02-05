@@ -26,12 +26,9 @@ export const fetchCart = createAsyncThunk(
         : {};
 
       // ensure we send only _id if userId is an object
-      const id = typeof userId === "object" ? userId._id : userId;
-
-      const response = await axios.get("http://localhost:3000/api/cart", {
-        params: { userId: id, guestId },
-        headers,
-      });
+      const id = userId && typeof userId === "object" ? userId._id : userId;
+const params = userId ? { userId: id } : { guestId };
+const response = await axios.get("http://localhost:3000/api/cart", { params, headers });
 
       return response.data;
     } catch (error) {

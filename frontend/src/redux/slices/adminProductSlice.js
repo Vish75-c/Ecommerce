@@ -11,6 +11,7 @@ export const fetchAdminProducts = createAsyncThunk(
       const response = await axios.get(API_URL, {
         headers: { Authorization: `Bearer ${localStorage.getItem("userToken")}` },
       });
+      
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch");
@@ -67,7 +68,7 @@ const adminProductSlice = createSlice({
       })
       .addCase(fetchAdminProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = action.payload;
+        state.products = [...action.payload];
       })
       .addCase(fetchAdminProducts.rejected, (state, action) => {
         state.loading = false;

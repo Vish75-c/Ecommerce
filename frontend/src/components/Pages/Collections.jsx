@@ -54,7 +54,7 @@ const Collections = () => {
   }, []);
 
   return (
-    <>
+    <div className='mt-14'>
       <div className="flex flex-col lg:flex-row space-y-6 md:space-x-6">
         {/* Mobile Slide Function */}
         <button
@@ -87,7 +87,7 @@ const Collections = () => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

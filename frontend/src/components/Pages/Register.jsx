@@ -19,7 +19,7 @@ const Register = () => {
   return (
     <>
       
-      <div className="md:flex flex-row">
+      <div className="md:flex flex-row mt-10">
         <div className=" w-full md:w-1/2 p-8 md:p-12 flex items-center justify-center">
         <form onSubmit={(e)=>handlesubmit(e)} className=" p-8 rounded-lg flex flex-col justify-center items-center max-w-md shadow-md border border-gray-300">
             <h1 className="font-bold text-xl mb-4"><span className='text-xl'>ꙮ</span>BuyHive</h1>
