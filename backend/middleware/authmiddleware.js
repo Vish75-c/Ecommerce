@@ -1,28 +1,21 @@
 import express from "express";
 import jwt from "jsonwebtoken"
 import usermodel from "../models/user.js";
-import { configDotenv } from "dotenv";
-configDotenv();
+import dotenv from "dotenv";
+dotenv.config();
 const protect = async (req, res, next) => {
 
-    let token;
-    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
-        try {
-            token = req.headers.authorization.split(" ")[1];
-            const decoded = await jwt.verify(token, process.env.jwt_secretkey);
-            // console.log(decoded);
-            const user = await usermodel.findById(decoded.user.id).select('-password');
-            req.user = user;
-            // console.log(user);
-            next();
-        } catch (err) {
-            console.log("Token Validation Failed", err);
-            res.status(401).send("Token Verification failed");
+    let token=res.cookies.jwt;
+    if(!token)return res.status(401).sen("You are not authenticated");
+    jwt.verify(token, process.env.JWT_KEY, async (err, payload) => {
+        if (err) {
+            return res.status(401).send("Token is not valid")
+        } else {
+            req.userId = payload.userId;
+            // console.log(req.user);
+            next()
         }
-    } else {
-        console.log("Token Validation Failed", err);
-        res.status(401).send("Token Verification failed");
-    }
+    })
 }
 export const checkadmin = (req, res, next) => {
     try {

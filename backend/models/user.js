@@ -8,16 +8,12 @@ const userSchema=new mongoose.Schema({
     role:{type:String,enum:["customer","admin"],default:"customer"}
 })
 
-userSchema.pre('save',async function(next){
-    if(!this.isModified('password'))return next();
-    try{
-        const salt=await bcrypt.genSalt(10);
-        const hash=await bcrypt.hash(this.password,salt);
-        this.password=hash;
-        return next();
-    }catch(err){
-        return next(err);
-    }
+userSchema.pre('save',async function(){
+    if(!this.isModified('password'))return;
+
+    const salt=await bcrypt.genSalt(10);
+    const hash=await bcrypt.hash(this.password,salt);
+    this.password=hash;
 })
 userSchema.methods.matchPassword=async function(enteredpassword){
     return bcrypt.compare(enteredpassword,this.password);

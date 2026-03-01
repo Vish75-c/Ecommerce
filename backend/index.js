@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors"
-import { configDotenv } from "dotenv";
+import dotenv from "dotenv";
 import db from "./config/db.js";
 import productRoutes from './route/ProductRoutes.js'
 import checkoutRoutes from './route/CheckoutRoutes.js'
@@ -12,14 +12,15 @@ import subscribeRoute from "./route/SubscribeRoutes.js"
 import adminRoutes from "./route/AdminRoutes.js"
 import productadminRoutes from "./route/ProductAdminRoutes.js"
 import orderadminRoutes from "./route/AdminOrderRoutes.js"
-configDotenv()
+import cookieParser from "cookie-parser";
 
+dotenv.config();
 const app=express();
 const port=process.env.PORT||3000
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-
+app.use(cookieParser());
 app.get('/',(req,res)=>{
     res.send("Start");
 })

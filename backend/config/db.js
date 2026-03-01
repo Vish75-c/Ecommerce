@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { configDotenv } from "dotenv";
 configDotenv();
-const url=process.env.atlas_mongo_url
+const url=process.env.local_mongo_url
 console.log(url)
 mongoose.connect(url,{
     useNewUrlParser:true,
